@@ -20,7 +20,7 @@ $valueArray = @()
 		}
 foreach ($i in 0..($valueArray.Length -1 )) {
 	if ($valueArray[$i].Substring($valueArray[$i].LastIndexOf('\') + 1) -eq 'Code.exe" "%1"') {
-		$value = ($valueArray[$i]).ToString().Substring(0, ($valueArray[$i]).ToString().LastIndexOf('\')+1) + 'Code.exe --profile ' + $profile + ' "%1"'
+		$value = ($valueArray[$i]).ToString().Substring(0, ($valueArray[$i]).ToString().LastIndexOf('\')+1) + 'Code.exe" --profile ' + $profile + ' "%1"'
 		$path=$pathArray[$i]; $valueName='(Default)'
 		Set-ItemProperty -Path "$path" -Name '(Default)' -Value "$value"
 		if($?) {
@@ -43,7 +43,7 @@ $valueArray = @()
 		}
 foreach ($i in 0..($valueArray.Length -1 )) {
 	if ($valueArray[$i].Substring($valueArray[$i].LastIndexOf('\') + 1) -eq 'Code.exe" "%1"') {
-		$value = ($valueArray[$i]).ToString().Substring(0, ($valueArray[$i]).ToString().LastIndexOf('\')+1) + 'Code.exe --profile ' + $profile + ' "%1"'
+		$value = ($valueArray[$i]).ToString().Substring(0, ($valueArray[$i]).ToString().LastIndexOf('\')+1) + 'Code.exe" --profile ' + $profile + ' "%1"'
 		$path=$pathArray[$i]; $valueName='(Default)'
 		Set-ItemProperty -Path "$path" -Name '(Default)' -Value "$value"
 		if($?) {
