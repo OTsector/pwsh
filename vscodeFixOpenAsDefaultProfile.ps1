@@ -51,3 +51,24 @@ foreach ($i in 0..($valueArray.Length -1 )) {
 		}
 	}
 }
+$pathArray = @(
+	'HKEY_CLASSES_ROOT\Applications\Code.exe\shell\open\command',
+	'HKEY_CLASSES_ROOT\Directory\Background\shell\VSCode\command',
+	'HKEY_CLASSES_ROOT\Directory\shell\VSCode\command',
+	'HKEY_CLASSES_ROOT\Drive\shell\VSCode\command',
+	'HKEY_CLASSES_ROOT\tpl_auto_file\shell\open\command',
+	'HKEY_CLASSES_ROOT\vscode\shell\open\command',
+	'HKEY_CLASSES_ROOT\VSCodeSourceFile\shell\open',
+	'HKEY_CLASSES_ROOT\VSCodeSourceFile\shell\open\command',
+	'HKEY_CURRENT_USER\Software\Classes\*\shell\VSCode\command',
+	'HKEY_CURRENT_USER\Software\Classes\vscode\shell\open\command'
+)
+foreach ($path in $pathArray) {
+	if (-not ((Get-ItemProperty -LiteralPath ('Registry::'+$path)).'(default)' -match '--profile '+ $profile)) {
+		$value = ((Get-ItemProperty -LiteralPath ('Registry::'+$path)).'(default)' + ' --profile ' + $profile)
+		Set-ItemProperty -Path ('registry::' + $path) -Name '(Default)' -Value $value
+		if($?) {
+			Write-Output "=====START`nregistry value is changed`npath: $path;`nvalueName: (Default);`nvalue: $value`n=======END`n"
+		}
+	}
+}
