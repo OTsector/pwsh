@@ -1,3 +1,7 @@
+if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+	Write-Output "You shoult run this script as Administrator"
+	exit 1
+}
 $jsonFile = "$home\AppData\Roaming\Code\User\globalStorage\storage.json"
 if (-Not (Test-Path -Path $jsonFile -PathType Leaf)) {
 	$profile = Read-Host "error: profile name is not fount (may VScode is not installed at default location).`nenter your profile name"
@@ -64,7 +68,7 @@ $pathArray = @(
 	'HKEY_CURRENT_USER\Software\Classes\vscode\shell\open\command'
 )
 foreach ($path in $pathArray) {
-	if (-not ((Get-ItemProperty -LiteralPath ('Registry::'+$path)).'(default)' -match '--profile '+ $profile)) {
+	if ((Test-Path $path) -and -not ((Get-ItemProperty -LiteralPath ('Registry::'+$path)).'(default)' -match '--profile '+ $profile)) {
 		$value = ((Get-ItemProperty -LiteralPath ('Registry::'+$path)).'(default)' + ' --profile ' + $profile)
 		Set-ItemProperty -Path ('registry::' + $path) -Name '(Default)' -Value $value
 		if($?) {
@@ -72,3 +76,4 @@ foreach ($path in $pathArray) {
 		}
 	}
 }
+exit 0
