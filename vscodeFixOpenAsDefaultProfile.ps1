@@ -1,5 +1,5 @@
 if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-	Write-Output "You shoult run this script as Administrator"
+	Write-Output "error: you should run this script as Administrator"
 	exit 1
 }
 $jsonFile = "$home\AppData\Roaming\Code\User\globalStorage\storage.json"
